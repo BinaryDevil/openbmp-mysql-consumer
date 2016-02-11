@@ -57,10 +57,11 @@ public class MySQLWriterThread implements  Runnable {
          * Establish connection to MySQL
          */
         try {
+            Class.forName("com.mysql.fabric.jdbc.FabricMySQLDriver");
             con = DriverManager.getConnection(
-                    "jdbc:mariadb://" + cfg.getDbHost() + "/" + cfg.getDbName() +
-                            "?tcpKeepAlive=true&connectTimeout=30000&socketTimeout=15000&useCompression=true&autoReconnect=true&allowMultiQueries=true",
-                    cfg.getDbUser(), cfg.getDbPw());
+                    "jdbc:mysql:fabric://" + cfg.getFabricHost() + "/" + cfg.getDbName() +
+                            "?fabricServerGroup=" + cfg.getFabricServerGroup() + "&fabricUsername=" + cfg.getFabricUser() + "&fabricPassword=" + cfg.getFabricPw()
+                            + "&tcpKeepAlive=true&socketTimeout=1000&useCompression=true&autoReconnect=true&allowMultiQueries=true", cfg.getDbUser(), cfg.getDbPw());
 
             logger.debug("Writer thread connected to mysql");
 
@@ -71,6 +72,8 @@ public class MySQLWriterThread implements  Runnable {
         } catch (SQLException e) {
             e.printStackTrace();
             logger.warn("Writer thread failed to connect to mysql");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

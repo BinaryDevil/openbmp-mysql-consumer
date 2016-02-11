@@ -169,15 +169,17 @@ public class MySQLConsumerApp
 
         // Validate DB connection
         try {
+            Class.forName("com.mysql.fabric.jdbc.FabricMySQLDriver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mariadb://" + cfg.getDbHost() + "/" + cfg.getDbName() +
-                            "?tcpKeepAlive=1&socketTimeout=1000&useCompression=true&autoReconnect=true&allowMultiQueries=true",
-                    cfg.getDbUser(), cfg.getDbPw());
+                    "jdbc:mysql:fabric://" + cfg.getFabricHost() + "/" + cfg.getDbName() +
+                            "?fabricServerGroup=" + cfg.getFabricServerGroup() + "&fabricUsername=" + cfg.getFabricUser() + "&fabricPassword=" + cfg.getFabricPw()
+                            + "&tcpKeepAlive=true&socketTimeout=1000&useCompression=true&autoReconnect=true&allowMultiQueries=true", cfg.getDbUser(), cfg.getDbPw());
             con.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(2);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         MySQLConsumerApp mysqlApp = new MySQLConsumerApp(cfg);

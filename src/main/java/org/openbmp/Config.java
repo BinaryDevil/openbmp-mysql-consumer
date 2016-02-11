@@ -25,15 +25,18 @@ public class Config {
     private Options options = new Options();
 
     /// Config variables
-    private String zookeeperAddress = "localhost:2181";
-    private String groupId = "openbmp-mysql-consumer";
+    private String zookeeperAddress = "bmp-dev.openbmp.org:2181";
+    private String groupId = "openbmp-mysql-consumer-fabric";
     private String clientId = null;
     private Integer expected_heartbeat_interval = 330000;
     private Integer stats_interval = 300;
-    private String db_host = "localhost:3306";
+    private String fabric_host = "172.29.67.116:32274";
+    private String fabric_user = "admin";
+    private String fabric_pw = "secret";
+    private String fabric_server_group = "openBMP";
+    private String db_name = "openBMP";
     private String db_user = "openbmp";
     private String db_pw = "openbmp";
-    private String db_name = "openBMP";
     private Boolean offsetLargest = Boolean.FALSE;
 
     //Turns this class to a singleton
@@ -52,10 +55,13 @@ public class Config {
         options.addOption("ol", "offset_largest", false, "Set offset to largest when offset is not known");
         options.addOption("e", "expected_heartbeat_interval", true, "Max age in minutes for collector heartbeats (default is 6 minutes)");
         options.addOption("s", "stats_interval", true, "Stats interval in seconds (default 300 seconds, 0 disables");
-        options.addOption("dh", "db_host", true, "Database host (default is localhost:3306)");
+        options.addOption("fh", "fabric_host", true, "Fabric host (default is localhost:32274)");
+        options.addOption("fu", "fabric_user", true, "Fabric username (default is admin)");
+        options.addOption("fp", "fabric_pw", true, "Fabric password (default is secret)");
+        options.addOption("fg", "fabric_server_group", true, "Fabric high-availability group name (default is openBMP)");
+        options.addOption("dn", "db_name", true, "Database name (default is openBMP)");
         options.addOption("du", "db_user", true, "Database username (default is openbmp)");
         options.addOption("dp", "db_pw", true, "Database password (default is openbmp)");
-        options.addOption("dn", "db_name", true, "Database name (default is openBMP)");
         options.addOption("h", "help", false, "Usage help");
 
     }
@@ -99,17 +105,26 @@ public class Config {
             else
                 clientId = groupId;
 
-            if (cmd.hasOption("dh"))
-                db_host = cmd.getOptionValue("dh");
+            if (cmd.hasOption("fh"))
+                fabric_host = cmd.getOptionValue("dh");
+
+            if (cmd.hasOption("fu"))
+                fabric_user = cmd.getOptionValue("du");
+
+            if (cmd.hasOption("fp"))
+                fabric_pw = cmd.getOptionValue("dp");
+
+            if (cmd.hasOption("fg"))
+                fabric_server_group = cmd.getOptionValue("fg");
+
+            if (cmd.hasOption("dn"))
+                db_name = cmd.getOptionValue("dn");
 
             if (cmd.hasOption("du"))
                 db_user = cmd.getOptionValue("du");
 
             if (cmd.hasOption("dp"))
                 db_pw = cmd.getOptionValue("dp");
-
-            if (cmd.hasOption("dn"))
-                db_name = cmd.getOptionValue("dn");
 
         } catch (ParseException e) {
             //e.printStackTrace();
@@ -145,17 +160,23 @@ public class Config {
         return groupId;
     }
 
-    String getDbHost() { return db_host; }
+    String getFabricHost() { return fabric_host; }
+
+    String getFabricUser() { return fabric_user; }
+
+    String getFabricPw() { return fabric_pw; }
+
+    String getDbName() { return db_name; }
 
     String getDbUser() { return db_user; }
 
     String getDbPw() { return db_pw; }
 
-    String getDbName() { return db_name; }
-
     Boolean getOffsetLargest() { return offsetLargest; }
 
     public Integer getHeartbeatInterval() { return expected_heartbeat_interval; }
+
+    public String getFabricServerGroup() { return fabric_server_group; }
 
     Integer getStatsInterval() { return stats_interval; }
 }
