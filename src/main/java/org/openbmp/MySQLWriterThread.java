@@ -61,7 +61,7 @@ public class MySQLWriterThread implements  Runnable {
             con = DriverManager.getConnection(
                     "jdbc:mysql:fabric://" + cfg.getFabricHost() + "/" + cfg.getDbName() +
                             "?fabricServerGroup=" + cfg.getFabricServerGroup() + "&fabricUsername=" + cfg.getFabricUser() + "&fabricPassword=" + cfg.getFabricPw()
-                            + "&tcpKeepAlive=true&socketTimeout=1000&useCompression=true&autoReconnect=true&allowMultiQueries=true", cfg.getDbUser(), cfg.getDbPw());
+                            + "&tcpKeepAlive=true&useCompression=true&autoReconnect=true&allowMultiQueries=true", cfg.getDbUser(), cfg.getDbPw());
 
             logger.debug("Writer thread connected to mysql");
 

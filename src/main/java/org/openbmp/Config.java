@@ -25,12 +25,12 @@ public class Config {
     private Options options = new Options();
 
     /// Config variables
-    private String zookeeperAddress = "bmp-dev.openbmp.org:2181";
+    private String zookeeperAddress = "localhost:2181";
     private String groupId = "openbmp-mysql-consumer-fabric";
     private String clientId = null;
     private Integer expected_heartbeat_interval = 330000;
     private Integer stats_interval = 300;
-    private String fabric_host = "172.29.67.116:32274";
+    private String fabric_host = "172.29.67.115:32274";
     private String fabric_user = "admin";
     private String fabric_pw = "secret";
     private String fabric_server_group = "openBMP";
